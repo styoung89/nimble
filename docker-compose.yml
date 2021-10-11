@@ -1,5 +1,8 @@
 version: "3.7"
 services:
+  application:
+    image: ngen
+    container_name: generator
   minio:
     image: minio/minio:latest
     container_name: minio

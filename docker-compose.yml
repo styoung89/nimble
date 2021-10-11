@@ -21,7 +21,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=nimble
       - PGPASSWORD=postgres
-      -  PGDATA=/data/postgres
+      - PGDATA=/data/postgres
     volumes:
       - postgres_nimble:/data/postgres
   zookeeper:
@@ -31,7 +31,6 @@ services:
   kafka:
     image: confluentinc/cp-server:6.2.1
     depends_on: [zookeeper]
-
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT

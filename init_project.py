@@ -30,7 +30,7 @@ def create_tables():
     uuid        UUID PRIMARY KEY  DEFAULT uuid_generate_v4() NOT NULL,
     robot_id    UUID,
     event_id    UUID,
-    timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    timestamp   TIMESTAMP
     )
     '''
 
@@ -40,7 +40,7 @@ def create_tables():
     robot_id    UUID,
     event_id    UUID DEFAULT uuid_generate_v4(),
     teleop_id   UUID DEFAULT uuid_generate_v4(),
-    timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    timestamp   TIMESTAMP
     )'''
 
     images_query = '''
@@ -48,7 +48,7 @@ def create_tables():
     uuid        UUID   PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     robot_id    UUID,
     link        VARCHAR(500),
-    timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    timestamp   TIMESTAMP
     )
     '''
     with engine.connect() as connection:
@@ -80,12 +80,17 @@ def create_connector(name: str):
             "database.password": "postgres",
             "database.dbname": "nimble",
             "database.server.name": "postgres",
-            "table.include.list": f"public.{name}"
+            "table.include.list": f"public.{name}",
+            "slot.name": f"{name}"
         }
     }
     response = requests.post(f'http://{HOST}:8083/connectors', json=payload)
     if response.status_code == 409:
-        pass
+        print('409')
+        delete_response = requests.delete(f'http://{HOST}:8083/connectors/{name}-connector')
+        if delete_response.status_code == 204:
+            create_connector(name)
+
     elif response.status_code != 201:
         raise Exception(response.json())
 
@@ -93,6 +98,5 @@ def create_connector(name: str):
 if __name__ == "__main__":
     # create_database()
     # create_tables()
-    for item in ('robot', 'image', 'teleop'):
-        create_connector(item)
-
+    for item in ('image',): #, 'robot', 'teleop'):
+         create_connector(item)

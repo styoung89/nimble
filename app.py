@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from asyncio import get_event_loop, sleep
+from datetime import datetime
 from minio import Minio
 from random import randrange, choice
 from sqlalchemy import create_engine
@@ -23,8 +24,8 @@ async def random_robot():
         delay = randrange(1, 60)
 
         query = f'''
-        INSERT INTO robot (robot_id)
-        VALUES ('{robot_id}')
+        INSERT INTO robot (robot_id, timestamp)
+        VALUES ('{robot_id}', '{datetime.now()}')
         '''
         with engine.connect() as connection:
             connection.execute(query)
@@ -37,8 +38,8 @@ async def random_teleop():
         robot_id = choice(robots)
         delay = randrange(30, 90)
         query = f'''
-        INSERT INTO teleop (robot_id)
-        VALUES ('{robot_id}')
+        INSERT INTO teleop (robot_id, timestamp)
+        VALUES ('{robot_id}', '{datetime.now()}')
         '''
         with engine.connect() as connection:
             connection.execute(query)
@@ -53,8 +54,8 @@ async def random_image():
         link = minio_call(robot_id)
 
         query = f'''
-        INSERT INTO image (robot_id, link)
-        VALUES ('{robot_id}', '{link}')
+        INSERT INTO image (robot_id, link, timestamp)
+        VALUES ('{robot_id}', '{link}', '{datetime.now()}')
         '''
 
         with engine.connect() as connection:

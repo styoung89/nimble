@@ -16,6 +16,8 @@ ds = df \
     .option("checkpointLocation", "/tmp/delta") \
     .start('/tmp/delta/events')
 
+
+# console
 ds = df \
     .selectExpr('CAST(value AS STRING)') \
     .writeStream \

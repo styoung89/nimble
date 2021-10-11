@@ -1,4 +1,4 @@
-from kafka.admin import KafkaAdminClient, NewTopic
+from kafka.admin import KafkaAdminClient, NewTopic, ConfigResource, ConfigResourceType
 from kafka import BrokerConnection
 from sqlalchemy import create_engine
 import requests
@@ -27,7 +27,7 @@ def create_tables():
 
     robot_query = '''
     CREATE TABLE IF NOT EXISTS robot (
-    uuid        UUID UNIQUE  DEFAULT uuid_generate_v4() NOT NULL,
+    uuid        UUID PRIMARY KEY  DEFAULT uuid_generate_v4() NOT NULL,
     robot_id    UUID,
     event_id    UUID,
     timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -36,7 +36,7 @@ def create_tables():
 
     teleop_query = '''
         CREATE TABLE IF NOT EXISTS teleop (
-    uuid        UUID UNIQUE NOT NULL  DEFAULT uuid_generate_v4(),
+    uuid        UUID PRIMARY KEY NOT NULL  DEFAULT uuid_generate_v4(),
     robot_id    UUID,
     event_id    UUID DEFAULT uuid_generate_v4(),
     teleop_id   UUID DEFAULT uuid_generate_v4(),
@@ -45,7 +45,7 @@ def create_tables():
 
     images_query = '''
     CREATE TABLE IF NOT EXISTS image (
-    uuid        UUID   UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
+    uuid        UUID   PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     robot_id    UUID,
     link        VARCHAR(500),
     timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -95,3 +95,4 @@ if __name__ == "__main__":
     # create_tables()
     for item in ('robot', 'image', 'teleop'):
         create_connector(item)
+

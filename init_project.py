@@ -73,7 +73,7 @@ def create_connector(name: str):
         "name": f"{name}-connector",
         "config": {
             "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
-            "plugin.name": "pgoutput",
+            "plugin.name": "wal2json",
             "database.hostname": f"host.docker.internal",
             "database.port": f"{POSTGRES_PORT}",
             "database.user": "postgres",
@@ -81,7 +81,10 @@ def create_connector(name: str):
             "database.dbname": "nimble",
             "database.server.name": "postgres",
             "table.include.list": f"public.{name}",
-            "slot.name": f"{name}"
+            "slot.name": f"{name}",
+            "snapshot.mode": "always",
+            "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+            "value.converter": "org.apache.kafka.connect.json.JsonConverter"
         }
     }
     response = requests.post(f'http://{HOST}:8083/connectors', json=payload)

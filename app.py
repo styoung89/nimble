@@ -13,7 +13,7 @@ robots = [
     'a46a59f8-9a7e-4f24-9456-dfe0c013e11b',
     '7b1e9d73-c70d-4d43-84de-74ce383d1aa4'
 ]
-HOST = 'localhost'
+HOST = 'host.docker.internal'
 PORT = '5433'
 engine = create_engine(f'postgresql+psycopg2://postgres:postgres@{HOST}:{PORT}/nimble')
 

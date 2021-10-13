@@ -1,9 +1,8 @@
 from kafka.admin import KafkaAdminClient, NewTopic, ConfigResource, ConfigResourceType
-from kafka import BrokerConnection
 from sqlalchemy import create_engine
 import requests
 
-HOST = 'localhost'
+HOST = 'host.docker.internal'
 POSTGRES_PORT = '5433'
 
 
@@ -101,5 +100,5 @@ def create_connector(name: str):
 if __name__ == "__main__":
     # create_database()
     # create_tables()
-    for item in ('image',): #, 'robot', 'teleop'):
-         create_connector(item)
+    for item in ('image',):  # , 'robot', 'teleop'):
+        create_connector(item)

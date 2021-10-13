@@ -21,3 +21,4 @@ RUN chmod +x ./cmd/*
 
 EXPOSE 9000
 ENTRYPOINT ["./cmd/start.sh"]
+

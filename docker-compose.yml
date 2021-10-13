@@ -1,7 +1,9 @@
 version: "3.7"
 services:
-  application:
-    image: ngen
+  generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: generator
   minio:
     image: minio/minio:latest
@@ -34,7 +36,6 @@ services:
   kafka:
     image: confluentinc/cp-server:6.2.1
     depends_on: [zookeeper]
-
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
